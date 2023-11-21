@@ -1,51 +1,58 @@
 import java.util.Scanner;
+import java.util.Random;
 
 public class Main {
-    public static void numberGuess() {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+        boolean playAgain = true;
+        int totalAttempts = 0;
+        int roundsWon = 0;
 
-        // scanner
-        Scanner sc = new Scanner(System.in);
+        // for multiple rounds
+        while (playAgain) {
+            // random number generates for each round
+            int generatedNumber = random.nextInt(100) + 1;
+            int attempts = 0;
+            boolean guessedCorrectly = false;
 
-        // generate random  number
-        int num = 1+(int)(100*Math.random());
+            System.out.println("Guess the number between 1 and 100. You have 5 attempts.");
 
-        // n trials
-        int n = 10;
+            while (attempts < 7) {
+                System.out.print("Attempt " + (attempts + 1) + ": ");
+                int userGuess = scanner.nextInt();
+                attempts++;
 
-        int i, guess;
-
-        System.out.println( "A number is chosen" + " between 1 to 100."
-                + "Guess the number" + " within 10 trials.");
-        // iterate over n trials
-        for (i=0; i<n; i++){
-            System.out.print("Guess the number:");
-            guess = sc.nextInt();
-
-            // If the number is guessed
-            if (num == guess) {
-                System.out.println("Congratulations!" + " You guessed the number.");
-                break;
+                if (userGuess < generatedNumber) {
+                    System.out.println("Too low! Try again.");
+                } else if (userGuess > generatedNumber) {
+                    System.out.println("Too high! Try again.");
+                } else {
+                    System.out.println("Congratulations! You guessed the correct number!");
+                    guessedCorrectly = true;
+                    break;
+                }
             }
-            else if (num > guess
-                    && i != n - 1) {
-                System.out.println("The number is " + "greater than " + guess);
+
+            if (guessedCorrectly) {
+                roundsWon++;
             }
-            else if (num < guess
-                    && i != n - 1) {
-                System.out.println("The number is" + " less than " + guess);
+
+            totalAttempts += attempts;
+
+            System.out.println("Round over. The number was: " + generatedNumber);
+            System.out.println("Rounds won: " + roundsWon);
+            System.out.println("Total attempts: " + totalAttempts);
+
+            System.out.print("Do you want to play again? (yes/no): ");
+            String playChoice = scanner.next().toLowerCase();
+
+            if (!playChoice.equals("yes")) {
+                playAgain = false;
             }
         }
-        if (i == n) {
-            System.out.println("You have exhausted" + " 10 trials.");
 
-            System.out.println("The number was " + num);
-        }
-    }
-    // Driver Code
-    public static void
-    main(String[] arg)
-    {
-        // Function Call
-        numberGuess();
+        System.out.println("Game over. Thanks for playing!");
+        scanner.close();
     }
 }
